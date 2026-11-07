@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: kg-machinery
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: node .output/server/index.mjs
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
