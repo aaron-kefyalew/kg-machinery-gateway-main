@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import teamImg from "@/assets/about-yard.jpg";
-import { shareImageUrl } from "@/lib/site-seo";
+import { getBreadcrumbSchema, getCanonicalUrl, shareImageUrl } from "@/lib/site-seo";
 const teamImage = teamImg;
 
 export const Route = createFileRoute("/about")({
@@ -20,11 +20,22 @@ export const Route = createFileRoute("/about")({
       },
       { property: "og:image", content: shareImageUrl },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/about" },
+      { property: "og:url", content: getCanonicalUrl("/about") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: shareImageUrl },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: getCanonicalUrl("/about") }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          getBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "About Us", path: "/about" },
+          ]),
+        ),
+      },
+    ],
   }),
   component: AboutPage,
 });

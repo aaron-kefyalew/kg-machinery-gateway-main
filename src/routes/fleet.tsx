@@ -2,26 +2,57 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 
 import { fleet } from "@/components/site/fleet";
+import {
+  getCanonicalUrl,
+  getBreadcrumbSchema,
+  getServiceSchema,
+  shareImageUrl,
+} from "@/lib/site-seo";
 
 export const Route = createFileRoute("/fleet")({
   head: () => ({
     meta: [
-      { title: "Our Fleet | Excavators, Loaders & Dump Trucks in Ethiopia" },
+      { title: "Heavy Machinery Rental Fleet | Excavators, Loaders & Trucks in Addis Ababa" },
       {
         name: "description",
         content:
-          "Hire excavators, wheel loaders, dump trucks and lowbed transport from Kefyalew Girma. Well-maintained heavy equipment with operators across Ethiopia.",
+          "Rent high-performance crawler excavators, wheel loaders, dump trucks and lowbeds in Ethiopia. Verified machinery with certified operators and on-site servicing.",
       },
-      { property: "og:title", content: "Our Fleet | Kefyalew Girma Machinery Rental" },
+      { property: "og:title", content: "Heavy Machinery Fleet | Kefyalew Girma Machinery Rental" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/fleet" },
+      { property: "og:url", content: getCanonicalUrl("/fleet") },
+      { property: "og:image", content: shareImageUrl },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: shareImageUrl },
       {
         property: "og:description",
-        content: "Excavators, wheel loaders, dump trucks and lowbed transport for hire in Ethiopia.",
+        content:
+          "Excavators, wheel loaders, dump trucks and lowbed transport for hire across Addis Ababa and Ethiopia.",
       },
     ],
-    links: [{ rel: "canonical", href: "/fleet" }],
+    links: [{ rel: "canonical", href: getCanonicalUrl("/fleet") }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          getBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Our Fleet", path: "/fleet" },
+          ]),
+        ),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          getServiceSchema({
+            name: "Heavy Construction Machinery Hire (የኮንስትራክሽን ማሽነሪ ኪራይ)",
+            description:
+              "Crawler excavators, wheel loaders, dump trucks, rollers and heavy machinery for rent with trained operators across Ethiopia.",
+            path: "/fleet",
+          }),
+        ),
+      },
+    ],
   }),
   component: FleetPage,
 });

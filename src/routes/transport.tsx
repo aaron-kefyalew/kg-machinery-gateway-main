@@ -3,25 +3,56 @@ import { Route as RouteIcon, PackageCheck, FileCheck2, Clock } from "lucide-reac
 
 import transportImg from "@/assets/transport.jpg";
 
+import {
+  getBreadcrumbSchema,
+  getCanonicalUrl,
+  getServiceSchema,
+  shareImageUrl,
+} from "@/lib/site-seo";
+
 export const Route = createFileRoute("/transport")({
   head: () => ({
     meta: [
-      { title: "Land Transportation Services in Ethiopia | Kefyalew Girma" },
+      { title: "Land Transportation & Heavy Haulage in Ethiopia | Kefyalew Girma" },
       {
         name: "description",
         content:
-          "Heavy haulage and land transportation across Ethiopia: lowbed machinery moves, bulk aggregate hauling, permits, routing and on-time delivery.",
+          "Heavy haulage and land transportation across Ethiopia (የየብስ ትራንስፖርት): lowbed machinery moves, bulk aggregate hauling, oversize permits and reliable delivery.",
       },
-      { property: "og:title", content: "Land Transportation | Kefyalew Girma" },
+      { property: "og:title", content: "Land Transportation & Heavy Haulage | Kefyalew Girma" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/transport" },
+      { property: "og:url", content: getCanonicalUrl("/transport") },
+      { property: "og:image", content: shareImageUrl },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: shareImageUrl },
       {
         property: "og:description",
         content: "Lowbed machinery moves and bulk haulage across Ethiopia with permits and routing handled.",
       },
     ],
-    links: [{ rel: "canonical", href: "/transport" }],
+    links: [{ rel: "canonical", href: getCanonicalUrl("/transport") }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          getBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Land Transportation", path: "/transport" },
+          ]),
+        ),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          getServiceSchema({
+            name: "Heavy Haulage & Lowbed Transport (የየብስ ትራንስፖርት)",
+            description:
+              "Permitted heavy plant transport, lowbed equipment haulage, and bulk material transport across Addis Ababa and regional Ethiopia.",
+            path: "/transport",
+          }),
+        ),
+      },
+    ],
   }),
   component: TransportPage,
 });

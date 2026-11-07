@@ -3,6 +3,11 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 import heroImg from "@/assets/hero-site.jpg";
 import { QuoteForm } from "@/components/site/QuoteForm";
+import {
+  getBreadcrumbSchema,
+  getCanonicalUrl,
+  shareImageUrl,
+} from "@/lib/site-seo";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -11,18 +16,51 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Request a machinery rental or land transport quote. Call, email or send project details to our Addis Ababa team and get a response within one business day.",
+          "Request a machinery rental or land transport quote in Ethiopia. Call +251 993 936 962 or send project requirements for rapid quotation within one business day.",
       },
-      { property: "og:title", content: "Request a Quote | Kefyalew Girma" },
+      { property: "og:title", content: "Contact & Request a Quote | Kefyalew Girma" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/contact" },
+      { property: "og:url", content: getCanonicalUrl("/contact") },
+      { property: "og:image", content: shareImageUrl },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: shareImageUrl },
       {
         property: "og:description",
-        content: "Tell us your equipment, location and dates — we respond within one business day.",
+        content: "Tell us your equipment, location and dates — our Addis Ababa team responds within one business day.",
       },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: getCanonicalUrl("/contact") }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          getBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Contact & Quote", path: "/contact" },
+          ]),
+        ),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          name: "Contact Kefyalew Girma Machinery Rental & Land Transport",
+          url: getCanonicalUrl("/contact"),
+          mainEntity: {
+            "@type": "LocalBusiness",
+            name: "Kefyalew Girma Machinery Rental & Land Transport",
+            telephone: "+251993936962",
+            email: "info@kefyalewgirma.com",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Addis Ababa",
+              addressCountry: "ET",
+            },
+          },
+        }),
+      },
+    ],
   }),
   component: ContactPage,
 });
